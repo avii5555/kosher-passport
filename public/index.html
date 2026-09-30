@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kosher Passport — Plan a trip. Keep it kosher.</title>
+<meta name="description" content="Plan a kosher trip abroad: browse verified restaurants, hotels, and shuls by destination, and build a day-by-day itinerary — with AI assistance.">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">
+      <div class="logo-mark">K</div>
+      <div class="logo-text">Kosher<span>Passport</span></div>
+    </div>
+    <nav>
+      <a href="#setup">Trip setup</a>
+      <a href="#directory">Directory</a>
+      <a href="#itinerary">Itinerary</a>
+      <a href="#trips">My trips</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap" style="display:contents;">
+    <div>
+      <span class="eyebrow">Kosher travel, planned properly</span>
+      <h1>Plan a trip. <em>Keep it kosher.</em></h1>
+      <p class="sub">Set your destination and kashrut standard, browse verified restaurants, hotels, and shuls, and build a day-by-day itinerary that never leaves you guessing where you'll eat.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="document.getElementById('setup').scrollIntoView()">Start your trip</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('directory').scrollIntoView()">Browse the directory</button>
+      </div>
+    </div>
+    <div class="passport-mock">
+      <div class="stamp hero-stamp">
+        <svg viewBox="0 0 118 118"><path id="stamp-arc" d="M 15,59 A 44,44 0 1,1 103,59" fill="none"/></svg>
+        <div class="stamp-inner">MEHADRIN<br>VERIFIED</div>
+      </div>
+      <span class="field">Destination</span>
+      <div class="val">Rome, Italy</div>
+      <span class="field">Travel window</span>
+      <div class="val">Sep 14 – Sep 21</div>
+      <hr>
+      <span class="field">Kashrut standard</span>
+      <div class="val">Chalav Yisrael, Mehadrin</div>
+      <span class="field">Travelers</span>
+      <div class="val">2 adults</div>
+    </div>
+  </div>
+</section>
+
+<section id="setup">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Set up your trip</h2>
+        <p>This tunes what shows up in your directory — no more scrolling past places that don't match your standard.</p>
+      </div>
+      <span class="ticket-no">FORM · 01</span>
+    </div>
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="field-group">
+          <label for="destination">Destination</label>
+          <select id="destination" onchange="onDestinationChange()">
+            <option value="Rome">Rome, Italy</option>
+            <option value="Paris">Paris, France</option>
+            <option value="Bangkok">Bangkok, Thailand</option>
+            <option value="London">London, United Kingdom</option>
+            <option value="Barcelona">Barcelona, Spain</option>
+            <option value="Prague">Prague, Czechia</option>
+            <option value="Tokyo">Tokyo, Japan</option>
+            <option value="BuenosAires">Buenos Aires, Argentina</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="travelers">Travelers</label>
+          <input id="travelers" type="number" min="1" value="2">
+        </div>
+        <div class="field-group">
+          <label for="start-date">Departs</label>
+          <input id="start-date" type="date" onchange="onDatesChange()">
+        </div>
+        <div class="field-group">
+          <label for="end-date">Returns</label>
+          <input id="end-date" type="date" onchange="onDatesChange()">
+        </div>
+        <div class="field-group full">
+          <label>Kashrut standard</label>
+          <div class="chip-row" id="kashrut-chips">
+            <button class="chip active" data-level="standard">Standard hechsher</button>
+            <button class="chip" data-level="mehadrin">Mehadrin</button>
+            <button class="chip" data-level="chalav-yisrael">Chalav Yisrael</button>
+            <button class="chip" data-level="pas-yisrael">Pas Yisrael</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-footer">
+        <span class="form-note">Your directory below updates automatically as you change these.</span>
+        <button class="btn btn-primary" onclick="document.getElementById('directory').scrollIntoView()">Find kosher places →</button>
+      </div>
+      <div class="ai-row">
+        <button class="btn-ai" id="ai-generate-btn" onclick="generateAIItinerary()">✨ Generate itinerary with AI</button>
+        <span class="ai-status" id="ai-status">Builds a full day-by-day plan from verified listings for your destination and standard.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="directory">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2 id="directory-heading">Kosher directory — Rome</h2>
+        <p>Restaurants, hotels, shuls, and stores, each with hechsher and kashrut level shown up front.</p>
+      </div>
+      <span class="ticket-no">FORM · 02</span>
+    </div>
+    <div class="filter-bar" id="category-filters">
+      <button class="filter-btn active" data-cat="all">All</button>
+      <button class="filter-btn" data-cat="restaurant">Restaurants</button>
+      <button class="filter-btn" data-cat="hotel">Hotels</button>
+      <button class="filter-btn" data-cat="synagogue">Synagogues</button>
+      <button class="filter-btn" data-cat="store">Grocery & stores</button>
+    </div>
+    <div class="directory-grid" id="directory-grid"></div>
+  </div>
+</section>
+
+<section id="itinerary">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Your itinerary</h2>
+        <p>Places you've added, laid out day by day like boarding passes — easy to scan before you head out each morning.</p>
+      </div>
+      <span class="ticket-no">FORM · 03</span>
+    </div>
+    <div id="itinerary-container"></div>
+  </div>
+</section>
+
+<section id="trips">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Your trips</h2>
+        <p>No account needed — save a trip and you'll get a code. Keep the code to reload that trip later, on this device.</p>
+      </div>
+      <span class="ticket-no">FORM · 04</span>
+    </div>
+
+    <div class="trip-code-row">
+      <div class="trip-code-left">
+        <span class="form-note">Current trip code</span>
+        <div class="trip-code-value" id="current-trip-code">Not saved yet</div>
+        <span class="trip-code-hint" id="save-status">Save to generate a code for this trip.</span>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+        <button class="btn btn-primary" onclick="saveCurrentTrip()">Save this trip</button>
+        <div class="load-row">
+          <input type="text" id="load-code-input" placeholder="Enter code" class="mono">
+          <button class="btn btn-ghost" onclick="loadTripByCode(document.getElementById('load-code-input').value.trim())">Load</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="saved-trips-grid" id="saved-trips-grid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-note">Kosher Passport — website prototype. 8 sample destinations, AI-assisted itineraries, and trips saved by code. Add this page to your home screen for an app-like feel on mobile; a native app is a separate build.</div>
+    <div class="foot-note mono">v0.3 · repo build</div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

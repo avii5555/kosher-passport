@@ -1,0 +1,316 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --paper: #EFE9DA;
+  --paper-deep: #E4DCC7;
+  --ink: #1B2A4A;
+  --ink-soft: #33456B;
+  --stamp: #A83A2E;
+  --brass: #A07A3F;
+  --charcoal: #2A2620;
+  --sage: #5F7A54;
+  --sage-bg: #E4E9DC;
+  --line: rgba(27,42,74,0.16);
+  --radius: 4px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--charcoal);
+  font-family:'IBM Plex Sans', sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{
+  font-family:'Fraunces', serif;
+  color:var(--ink);
+  margin:0;
+}
+.mono{font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em;}
+a{color:inherit;}
+button{font-family:inherit; cursor:pointer;}
+:focus-visible{outline:2px solid var(--stamp); outline-offset:2px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important;}
+}
+
+/* texture */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(27,42,74,0.025) 0, transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(168,58,46,0.02) 0, transparent 45%);
+  pointer-events:none;
+  z-index:0;
+}
+
+.wrap{max-width:1120px; margin:0 auto; padding:0 28px; position:relative; z-index:1;}
+
+/* ============ HEADER ============ */
+header{
+  border-bottom:1px solid var(--line);
+  padding:20px 0;
+  position:sticky; top:0;
+  background:rgba(239,233,218,0.92);
+  backdrop-filter:blur(6px);
+  z-index:50;
+}
+header .wrap{display:flex; align-items:center; justify-content:space-between;}
+.logo{display:flex; align-items:center; gap:10px;}
+.logo-mark{
+  width:34px; height:34px; border-radius:50%;
+  border:2px solid var(--ink);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Fraunces', serif; font-weight:600; font-size:15px;
+  color:var(--ink);
+  flex-shrink:0;
+}
+.logo-text{font-family:'Fraunces', serif; font-weight:600; font-size:19px; color:var(--ink);}
+.logo-text span{color:var(--stamp);}
+nav{display:flex; gap:28px; font-size:14px;}
+nav a{text-decoration:none; color:var(--ink-soft); font-weight:500;}
+nav a:hover{color:var(--stamp);}
+
+/* ============ HERO ============ */
+.hero{
+  padding:88px 0 72px;
+  display:grid;
+  grid-template-columns:1.1fr 0.9fr;
+  gap:56px;
+  align-items:center;
+}
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--stamp); font-weight:600; margin-bottom:18px; display:block;
+}
+.hero h1{
+  font-size:clamp(38px, 5vw, 58px);
+  font-weight:600;
+  line-height:1.05;
+  letter-spacing:-0.01em;
+}
+.hero h1 em{font-style:italic; color:var(--brass);}
+.hero p.sub{
+  margin-top:20px; font-size:17px; color:var(--ink-soft); max-width:46ch;
+}
+.hero-cta{margin-top:32px; display:flex; gap:14px; flex-wrap:wrap;}
+.btn{
+  border:none; border-radius:2px; padding:13px 26px; font-size:14.5px; font-weight:600;
+  letter-spacing:0.01em; transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn-primary{background:var(--ink); color:var(--paper);}
+.btn-primary:hover{transform:translateY(-1px); box-shadow:0 6px 16px rgba(27,42,74,0.25);}
+.btn-ghost{background:transparent; border:1.5px solid var(--ink); color:var(--ink);}
+.btn-ghost:hover{background:var(--ink); color:var(--paper);}
+
+/* passport page mock */
+.passport-mock{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:26px;
+  box-shadow:0 20px 50px rgba(27,42,74,0.14), 0 2px 8px rgba(27,42,74,0.08);
+  position:relative;
+  transform:rotate(1.2deg);
+}
+.passport-mock .field{font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;}
+.passport-mock .val{font-size:15px; color:var(--charcoal); margin-bottom:14px; margin-top:3px; font-weight:500;}
+.passport-mock hr{border:none; border-top:1px dashed var(--line); margin:16px 0;}
+
+/* stamp signature element */
+.stamp{
+  position:absolute;
+  width:118px; height:118px;
+  border-radius:50%;
+  border:2.5px solid var(--stamp);
+  color:var(--stamp);
+  display:flex; align-items:center; justify-content:center;
+  transform:rotate(-14deg);
+  opacity:0.88;
+  mix-blend-mode:multiply;
+}
+.stamp svg{position:absolute; inset:0; width:100%; height:100%;}
+.stamp-inner{font-family:'Fraunces',serif; font-weight:700; font-size:13px; text-align:center; line-height:1.15;}
+.hero-stamp{top:14px; right:14px;}
+
+/* ============ SECTION SHELL ============ */
+section{padding:64px 0;}
+.section-head{margin-bottom:36px; display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:16px;}
+.section-head h2{font-size:30px; font-weight:600;}
+.section-head p{color:var(--ink-soft); font-size:15px; margin-top:6px; max-width:52ch;}
+.ticket-no{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--brass); letter-spacing:0.1em;}
+
+/* ============ TRIP SETUP FORM ============ */
+#setup{background:var(--paper-deep); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.form-card{
+  background:#fff; border:1px solid var(--line); border-radius:6px; padding:36px;
+  box-shadow:0 8px 24px rgba(27,42,74,0.06);
+}
+.form-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px;}
+.field-group{display:flex; flex-direction:column; gap:7px;}
+.field-group.full{grid-column:1/-1;}
+label{font-size:12.5px; font-weight:600; color:var(--ink); text-transform:uppercase; letter-spacing:0.05em;}
+input,select{
+  border:1.5px solid var(--line); border-radius:3px; padding:11px 12px; font-size:14.5px;
+  font-family:inherit; background:var(--paper); color:var(--charcoal);
+}
+input:focus, select:focus{border-color:var(--ink); background:#fff;}
+.chip-row{display:flex; gap:10px; flex-wrap:wrap;}
+.chip{
+  border:1.5px solid var(--line); border-radius:20px; padding:8px 16px; font-size:13.5px;
+  background:#fff; color:var(--ink-soft); font-weight:500;
+}
+.chip.active{background:var(--sage-bg); border-color:var(--sage); color:var(--sage); font-weight:600;}
+.form-footer{margin-top:28px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;}
+.form-note{font-size:12.5px; color:var(--ink-soft);}
+
+/* ============ DIRECTORY ============ */
+.filter-bar{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px;}
+.filter-btn{
+  border:1.5px solid var(--line); background:#fff; border-radius:20px; padding:8px 18px; font-size:13.5px; font-weight:500; color:var(--ink-soft);
+}
+.filter-btn.active{background:var(--ink); border-color:var(--ink); color:var(--paper);}
+.directory-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:20px;}
+.place-card{
+  background:#fff; border:1px solid var(--line); border-radius:6px; padding:22px;
+  display:flex; flex-direction:column; gap:12px; position:relative;
+  transition:box-shadow .15s ease;
+}
+.place-card:hover{box-shadow:0 10px 26px rgba(27,42,74,0.1);}
+.place-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+.place-cat{font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--brass); font-weight:600; font-family:'IBM Plex Mono',monospace;}
+.place-name{font-size:18px; font-weight:600; font-family:'Fraunces',serif; color:var(--ink); margin-top:2px;}
+.place-city{font-size:12.5px; color:var(--ink-soft);}
+.hechsher-badge{
+  flex-shrink:0; width:46px; height:46px; border-radius:50%;
+  border:1.5px solid var(--sage); color:var(--sage);
+  display:flex; align-items:center; justify-content:center;
+  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:700; text-align:center; line-height:1.1;
+  background:var(--sage-bg);
+}
+.place-desc{font-size:13.5px; color:var(--charcoal); line-height:1.5;}
+.place-tags{display:flex; gap:6px; flex-wrap:wrap;}
+.tag{font-size:11px; background:var(--paper-deep); color:var(--ink-soft); padding:4px 9px; border-radius:12px; font-weight:500;}
+.place-foot{display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:8px; border-top:1px dashed var(--line);}
+.add-btn{
+  background:none; border:1.5px solid var(--ink); color:var(--ink); border-radius:2px;
+  padding:7px 14px; font-size:12.5px; font-weight:600;
+}
+.add-btn:hover{background:var(--ink); color:var(--paper);}
+.add-btn.added{background:var(--sage); border-color:var(--sage); color:#fff;}
+.empty-directory{color:var(--ink-soft); font-size:14px; padding:30px 0;}
+
+/* ============ ITINERARY — boarding pass tickets ============ */
+#itinerary{background:var(--paper-deep); border-top:1px solid var(--line);}
+.day-tickets{display:flex; flex-direction:column; gap:26px;}
+.ticket{
+  background:#fff;
+  border-radius:6px;
+  display:grid;
+  grid-template-columns:1fr 200px;
+  box-shadow:0 10px 28px rgba(27,42,74,0.08);
+  position:relative;
+  overflow:visible;
+}
+.ticket::before, .ticket::after{
+  content:""; position:absolute; width:22px; height:22px; border-radius:50%;
+  background:var(--paper-deep); top:50%; transform:translateY(-50%);
+}
+.ticket::before{left:calc(200px - 11px);}
+.ticket::after{left:calc(200px - 11px); display:none;}
+.ticket-main{padding:26px 30px;}
+.ticket-stub{
+  border-left:2px dashed var(--line);
+  padding:26px 22px;
+  display:flex; flex-direction:column; justify-content:center; gap:10px;
+  background:var(--paper);
+}
+.ticket-day-label{font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--brass); font-weight:700; font-family:'IBM Plex Mono',monospace;}
+.ticket-date{font-family:'Fraunces',serif; font-size:22px; font-weight:600; color:var(--ink);}
+.ticket-city{font-size:13px; color:var(--ink-soft);}
+.stub-code{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft); margin-top:8px;}
+.itinerary-item{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:11px 0; border-bottom:1px solid var(--line);
+}
+.itinerary-item:last-child{border-bottom:none;}
+.item-left{display:flex; align-items:center; gap:12px;}
+.item-cat-dot{width:8px; height:8px; border-radius:50%; background:var(--sage); flex-shrink:0;}
+.item-name{font-size:14.5px; font-weight:600; color:var(--charcoal);}
+.item-meta{font-size:12px; color:var(--ink-soft);}
+.remove-btn{
+  background:none; border:none; color:var(--ink-soft); font-size:18px; line-height:1; padding:4px 8px;
+}
+.remove-btn:hover{color:var(--stamp);}
+.empty-day{color:var(--ink-soft); font-size:13.5px; font-style:italic; padding:6px 0;}
+.empty-itinerary{
+  background:#fff; border:1.5px dashed var(--line); border-radius:6px; padding:48px; text-align:center; color:var(--ink-soft);
+}
+
+/* ============ AI GENERATE ============ */
+.ai-row{
+  margin-top:18px; padding-top:18px; border-top:1px dashed var(--line);
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.btn-ai{
+  background:var(--brass); color:#fff; border:none; border-radius:2px; padding:13px 24px;
+  font-size:14.5px; font-weight:600; display:flex; align-items:center; gap:9px;
+}
+.btn-ai:hover{transform:translateY(-1px); box-shadow:0 6px 16px rgba(160,122,63,0.3);}
+.btn-ai:disabled{opacity:0.55; cursor:default; transform:none; box-shadow:none;}
+.spinner{
+  width:14px; height:14px; border-radius:50%;
+  border:2px solid rgba(255,255,255,0.4); border-top-color:#fff;
+  animation:spin 0.7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ai-status{font-size:13px; color:var(--ink-soft);}
+.ai-status.error{color:var(--stamp);}
+
+/* ============ SAVED TRIPS ============ */
+#trips{border-top:1px solid var(--line);}
+.trip-code-row{
+  background:#fff; border:1px solid var(--line); border-radius:6px; padding:26px;
+  display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  margin-bottom:24px;
+}
+.trip-code-left{display:flex; flex-direction:column; gap:4px;}
+.trip-code-value{font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; color:var(--ink); letter-spacing:0.06em;}
+.trip-code-hint{font-size:12.5px; color:var(--ink-soft);}
+.load-row{display:flex; gap:10px; align-items:center;}
+.load-row input{width:150px;}
+.saved-trips-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:16px;}
+.saved-trip-card{
+  background:#fff; border:1px solid var(--line); border-radius:6px; padding:18px;
+  display:flex; flex-direction:column; gap:8px;
+}
+.saved-trip-city{font-family:'Fraunces',serif; font-size:17px; font-weight:600; color:var(--ink);}
+.saved-trip-meta{font-size:12.5px; color:var(--ink-soft);}
+.saved-trip-code{font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--brass);}
+.saved-trip-actions{display:flex; gap:8px; margin-top:6px;}
+.mini-btn{
+  border:1.5px solid var(--ink); background:none; color:var(--ink); border-radius:2px;
+  padding:6px 12px; font-size:12px; font-weight:600;
+}
+.mini-btn:hover{background:var(--ink); color:var(--paper);}
+.mini-btn.danger{border-color:var(--stamp); color:var(--stamp);}
+.mini-btn.danger:hover{background:var(--stamp); color:#fff;}
+
+/* ============ FOOTER ============ */
+footer{padding:40px 0; border-top:1px solid var(--line);}
+footer .wrap{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;}
+.foot-note{font-size:12.5px; color:var(--ink-soft);}
+
+/* responsive */
+@media (max-width: 860px){
+  .hero{grid-template-columns:1fr; padding-top:56px;}
+  .form-grid{grid-template-columns:1fr;}
+  .ticket{grid-template-columns:1fr;}
+  .ticket-stub{border-left:none; border-top:2px dashed var(--line);}
+  nav{display:none;}
+}

@@ -1,0 +1,17 @@
+{
+  "name": "kosher-passport",
+  "version": "0.3.0",
+  "description": "AI-assisted kosher travel planner — website prototype",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
