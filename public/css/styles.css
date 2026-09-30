@@ -301,6 +301,18 @@ input:focus, select:focus{border-color:var(--ink); background:#fff;}
 .mini-btn.danger{border-color:var(--stamp); color:var(--stamp);}
 .mini-btn.danger:hover{background:var(--stamp); color:#fff;}
 
+/* ============ ITINERARY ACTIONS / NOTES ============ */
+.itinerary-actions{display:flex; align-items:center; gap:12px; margin-bottom:20px; flex-wrap:wrap;}
+.day-note{
+  margin-top:14px; padding-top:12px; border-top:1px dashed var(--line);
+}
+.day-note textarea{
+  width:100%; resize:vertical; min-height:44px; border:1.5px solid var(--line); border-radius:3px;
+  padding:9px 11px; font-size:13px; font-family:inherit; background:var(--paper); color:var(--charcoal);
+}
+.day-note textarea:focus{border-color:var(--ink); background:#fff;}
+.day-note label{display:block; margin-bottom:6px;}
+
 /* ============ FOOTER ============ */
 footer{padding:40px 0; border-top:1px solid var(--line);}
 footer .wrap{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;}
@@ -313,4 +325,13 @@ footer .wrap{display:flex; justify-content:space-between; align-items:center; fl
   .ticket{grid-template-columns:1fr;}
   .ticket-stub{border-left:none; border-top:2px dashed var(--line);}
   nav{display:none;}
+}
+
+/* print — only the itinerary tickets, nothing else */
+@media print{
+  header, .hero, #setup, #directory, #trips, footer, .itinerary-actions{display:none !important;}
+  body{background:#fff;}
+  #itinerary{padding:0;}
+  .ticket{box-shadow:none; border:1px solid #999; break-inside:avoid; margin-bottom:14px;}
+  .ticket::before{display:none;}
 }

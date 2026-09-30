@@ -8,6 +8,11 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Simple health check for uptime monitoring (Render, UptimeRobot, etc.)
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', hasApiKey: Boolean(process.env.ANTHROPIC_API_KEY) });
+});
+
 // Generates a day-by-day kosher itinerary using ONLY the listings the
 // browser sends us. The Anthropic API key lives only here, server-side —
 // it is never exposed to the browser.

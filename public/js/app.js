@@ -24,6 +24,7 @@ let state = {
   kashrutLevel: "standard",
   activeCategory: "all",
   itinerary: {}, // { "2026-09-14": [placeId, ...] }
+  dayNotes: {},  // { "2026-09-14": "free-text note" }
   tripCode: null
 };
 
@@ -145,6 +146,10 @@ function renderItinerary(){
               </div>
               <button class="remove-btn" aria-label="Remove ${item.name}" onclick="removeFromItinerary('${date}','${item.id}')">×</button>
             </div>`).join('')}
+        <div class="day-note">
+          <label for="note-${date}" class="form-note">Note for this day</label>
+          <textarea id="note-${date}" placeholder="e.g. call ahead to confirm the reservation" onchange="updateDayNote('${date}', this.value)">${escapeHtml(state.dayNotes[date] || '')}</textarea>
+        </div>
       </div>
       <div class="ticket-stub">
         <div class="ticket-day-label">Boarding</div>
@@ -154,6 +159,16 @@ function renderItinerary(){
       </div>
     </div>`;
   }).join('')}</div>`;
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function updateDayNote(date, value){
+  state.dayNotes[date] = value;
 }
 
 // ---------- AI itinerary generation ----------
@@ -234,6 +249,7 @@ async function saveCurrentTrip(){
     endDate: state.endDate,
     kashrutLevel: state.kashrutLevel,
     itinerary: state.itinerary,
+    dayNotes: state.dayNotes,
     savedAt: new Date().toISOString()
   };
   try {
@@ -277,12 +293,14 @@ function applyTripRecord(record){
   state.endDate = record.endDate;
   state.kashrutLevel = record.kashrutLevel;
   state.itinerary = record.itinerary || {};
+  state.dayNotes = record.dayNotes || {};
   state.tripCode = record.code;
 
   document.getElementById('destination').value = state.destination;
   document.getElementById('travelers').value = state.travelers;
   document.getElementById('start-date').value = state.startDate;
   document.getElementById('end-date').value = state.endDate;
+  showDatesError(null);
   document.querySelectorAll('#kashrut-chips .chip').forEach(c => {
     c.classList.toggle('active', c.dataset.level === state.kashrutLevel);
   });
@@ -343,14 +361,102 @@ async function renderSavedTrips(){
 function onDestinationChange(){
   state.destination = document.getElementById('destination').value;
   state.itinerary = {}; // itinerary is per-destination in this preview
+  state.dayNotes = {};
   renderDirectory();
   renderItinerary();
 }
 
+function showDatesError(message){
+  const row = document.getElementById('dates-error-row');
+  const el = document.getElementById('dates-error');
+  if (!message){
+    row.style.display = 'none';
+    el.textContent = '';
+    return false;
+  }
+  row.style.display = '';
+  el.textContent = message;
+  return true;
+}
+
 function onDatesChange(){
-  state.startDate = document.getElementById('start-date').value || null;
-  state.endDate = document.getElementById('end-date').value || null;
+  const startVal = document.getElementById('start-date').value || null;
+  const endVal = document.getElementById('end-date').value || null;
+
+  if (startVal && endVal && endVal < startVal){
+    showDatesError("Your return date is before your departure date — check the dates above.");
+    return; // don't apply invalid range to state
+  }
+
+  const MAX_TRIP_DAYS = 60;
+  if (startVal && endVal){
+    const days = (new Date(endVal) - new Date(startVal)) / 86400000;
+    if (days > MAX_TRIP_DAYS){
+      showDatesError(`That's a ${Math.round(days)}-day trip — trips longer than ${MAX_TRIP_DAYS} days aren't supported in this preview.`);
+      return;
+    }
+  }
+
+  showDatesError(null);
+  state.startDate = startVal;
+  state.endDate = endVal;
   renderItinerary();
+}
+
+function onTravelersChange(){
+  const input = document.getElementById('travelers');
+  const value = Math.max(1, parseInt(input.value, 10) || 1);
+  input.value = value;
+  state.travelers = value;
+}
+
+// ---------- Copy itinerary as plain text ----------
+function copyItineraryText(){
+  const dates = getDateRange();
+  const statusEl = document.getElementById('copy-status');
+  if (dates.length === 0){
+    statusEl.textContent = "Add dates and places first.";
+    return;
+  }
+
+  const lines = [`Kosher Passport — ${state.destination} itinerary`, ''];
+  dates.forEach((date, i) => {
+    const items = (state.itinerary[date] || []).map(id => findPlace(id)).filter(Boolean);
+    const dObj = new Date(date + 'T00:00:00');
+    lines.push(`Day ${i+1} — ${dObj.toLocaleDateString('en-US', {weekday:'long', month:'short', day:'numeric'})}`);
+    if (items.length === 0){
+      lines.push('  (nothing added yet)');
+    } else {
+      items.forEach(item => lines.push(`  - ${item.name} (${labelForCat(item.cat)}${item.level !== '—' ? ', ' + item.level : ''})`));
+    }
+    if (state.dayNotes[date]){
+      lines.push(`  Note: ${state.dayNotes[date]}`);
+    }
+    lines.push('');
+  });
+
+  const text = lines.join('\n');
+
+  const fallbackCopy = () => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+    document.body.removeChild(textarea);
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(
+      () => { statusEl.textContent = "Copied — paste it anywhere."; },
+      () => { fallbackCopy(); statusEl.textContent = "Copied — paste it anywhere."; }
+    );
+  } else {
+    fallbackCopy();
+    statusEl.textContent = "Copied — paste it anywhere.";
+  }
 }
 
 document.getElementById('kashrut-chips').addEventListener('click', (e) => {

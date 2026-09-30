@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kosher Passport — Plan a trip. Keep it kosher.</title>
 <meta name="description" content="Plan a kosher trip abroad: browse verified restaurants, hotels, and shuls by destination, and build a day-by-day itinerary — with AI assistance.">
+<meta name="theme-color" content="#1B2A4A">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -79,7 +83,7 @@
         </div>
         <div class="field-group">
           <label for="travelers">Travelers</label>
-          <input id="travelers" type="number" min="1" value="2">
+          <input id="travelers" type="number" min="1" value="2" onchange="onTravelersChange()">
         </div>
         <div class="field-group">
           <label for="start-date">Departs</label>
@@ -88,6 +92,9 @@
         <div class="field-group">
           <label for="end-date">Returns</label>
           <input id="end-date" type="date" onchange="onDatesChange()">
+        </div>
+        <div class="field-group full" id="dates-error-row" style="display:none;">
+          <span class="form-note" id="dates-error" style="color:var(--stamp);"></span>
         </div>
         <div class="field-group full">
           <label>Kashrut standard</label>
@@ -139,6 +146,11 @@
         <p>Places you've added, laid out day by day like boarding passes — easy to scan before you head out each morning.</p>
       </div>
       <span class="ticket-no">FORM · 03</span>
+    </div>
+    <div class="itinerary-actions">
+      <button class="mini-btn" onclick="copyItineraryText()">📋 Copy as text</button>
+      <button class="mini-btn" onclick="window.print()">🖨️ Print</button>
+      <span class="ai-status" id="copy-status"></span>
     </div>
     <div id="itinerary-container"></div>
   </div>
