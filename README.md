@@ -5,8 +5,23 @@ kosher. Pick a destination and a kashrut standard, browse a directory of
 restaurants, hotels, synagogues, and stores, and build (or auto-generate) a
 day-by-day itinerary.
 
-**Status:** website prototype with sample data. Not production-ready — see
-"Known limitations" below before relying on this for a real trip.
+**Status:** website prototype with sample data, deployed live at
+https://kosher-passport.onrender.com. Not production-ready — see "Known
+limitations" below before relying on this for a real trip.
+
+## Features
+
+- Trip setup with destination, dates (validated), traveler count, kashrut
+  standard
+- Directory of restaurants/hotels/synagogues/stores across 8 sample cities,
+  filterable by category
+- AI-generated day-by-day itinerary (via `/api/generate-itinerary`), or build
+  one manually
+- Per-day notes on the itinerary
+- Copy itinerary as plain text, or print it (dedicated print stylesheet)
+- Save/reload a trip by a 6-character code (`localStorage`, no login)
+- Installable to a phone home screen (`manifest.json` + icons)
+- `GET /health` for uptime monitoring
 
 ## Project structure
 
@@ -63,9 +78,11 @@ holds the real key and forwards the request.
    use `localStorage` with a 6-character code — there's no real login, and a
    trip is only accessible from the same browser it was saved in. A real
    product needs actual auth + a database.
-3. **No native mobile app.** The site is responsive and installable to a
-   phone's home screen, but an iOS/Android app is a separate build (React
-   Native, Swift, or Kotlin).
+3. **Not a native mobile app.** The site is responsive and installable to a
+   phone's home screen via `manifest.json` (real icon, opens without browser
+   chrome), which covers a lot of the "app-like" feel — but a true
+   iOS/Android app with offline support, push notifications, etc. is still a
+   separate build (React Native, Swift, or Kotlin).
 
 ## Design language
 
